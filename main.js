@@ -1,7 +1,7 @@
 let isWantToExe = true;
 const home = 'cashew ~ ';
 let paths = [];
-
+const files = ['demo.js', 'demo2.js'];
 const rmDots = function (value) {
   return value !== '..';
 };
@@ -14,14 +14,37 @@ const changeDir = function (path) {
   return '';
 };
 
+const touch = function (fileName) {
+  files.push(fileName);
+  return '';
+};
+
+const ls = function (files) {
+  files.forEach(element => {
+    console.log(element);
+  });
+  return '';
+};
+
 const executeCommands = function (command, value) {
+
   switch (command) {
     case 'end':
       isWantToExe = false;
       return '';
+    case 'ls':
+      return ls(files);
     case 'cd':
+      if (!value) {
+        return 'no arguments!!!!!!';
+      }
       return changeDir(value);
-    default: return ('error: unknown command " ' + command + ' "');
+    case 'touch':
+      if (!value) {
+        return 'no arguments!!!!!!';
+      }
+      return touch(value);
+    default: return ('error: unknown command "' + command + '"');
   }
 };
 
