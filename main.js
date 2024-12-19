@@ -1,12 +1,15 @@
 let isWantToExe = true;
-let path = 'cashew ~ :';
+let paths = ['cashew ~ '];
+
 while (isWantToExe) {
-  const response = prompt(path);
-  console.log('your response is... ', response);
-  if (response === "end") {
-    isWantToExe = false;
+  const [command, value] = prompt(paths.join('') + ' %').split(' ');
+  switch (command) {
+    case 'end':
+      isWantToExe = false;
+      break;
+    case 'cd': paths = paths.concat(value.split('/'));
+      break;
+    default: console.log('error: unknown command " ' + command + ' "');
   }
-  if (response === 'which') {
-    console.log(path.replace(' ~ ',''))
-  }
+
 }
