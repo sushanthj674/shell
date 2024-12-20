@@ -44,7 +44,7 @@ const executeCommands = function (command, value) {
         return 'no arguments!!!!!!';
       }
       return touch(value);
-    default: return ('error: unknown command "' + command + '"');
+    default: return ('cashew: unknown command : ' + command);
   }
 };
 
