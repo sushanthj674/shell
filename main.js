@@ -1,54 +1,44 @@
-let isWantToExe = true;
-const home = 'cashew ~ ';
-let paths = [];
-const files = ['demo.js', 'demo2.js'];
-const rmDots = function (value) {
-  return value !== '..';
+import { operation } from "./bulitinCmds.js";
+
+const getCurrentDir = (path, fileSystem) => {
+  return path.reduce((parentDir, nextDir) => parentDir[nextDir], fileSystem);
 };
 
-const changeDir = function (path) {
-  if (path[0] + path[1] === '..') {
-    paths.pop();
-  }
-  paths = paths.concat(path.split('/').filter(rmDots));
-  return '';
+const core = (allDirTree, home, currentPath) => {
+  const input = prompt(home + currentPath.join('/') + ' %');
+  const [command, ...data] = input.split(' ');
+  const args = data.join(' ');
+  const currentWorkingDir = getCurrentDir(currentPath, allDirTree);
+  console.log(operation[command](currentWorkingDir, args, currentPath));
+  core(allDirTree, home, currentPath);
 };
 
-const touch = function (fileName) {
-  files.push(fileName);
-  return '';
-};
+const main = () => {
+  const allDirTree = {
+    '~': {
+      'file1': {
+        'file11': {
+          'demo.txt': ['demo1']
+        },
+        'file12': {
+          'demo.txt': ['demo1']
+        }
+      },
 
-const ls = function (files) {
-  files.forEach(element => {
-    console.log(element);
-  });
-  return '';
-};
+      file2: {
+        file21: {
+          'demo.txt': ['demo1']
+        },
+        file22: {
+          'demo.txt': ['demo1']
 
-const executeCommands = function (command, value) {
-
-  switch (command) {
-    case 'end':
-      isWantToExe = false;
-      return '';
-    case 'ls':
-      return ls(files);
-    case 'cd':
-      if (!value) {
-        return 'no arguments!!!!!!';
+        },
       }
-      return changeDir(value);
-    case 'touch':
-      if (!value) {
-        return 'no arguments!!!!!!';
-      }
-      return touch(value);
-    default: return ('cashew: unknown command : ' + command);
-  }
+    }
+  };
+  const home = 'cashew ';
+  const currentPath = ['~'];
+  core(allDirTree, home, currentPath);
 };
 
-while (isWantToExe) {
-  const [command, value] = prompt(home + paths.join('/') + ' %').split(' ');
-  console.log(executeCommands(command, value));
-}
+main();
